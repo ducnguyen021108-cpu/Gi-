@@ -1,2 +1,506 @@
-# Auto detect text files and perform LF normalization
-* text=auto
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Trung Thu Tình Yêu 🌕</title>
+    <style>
+        /* ----- Reset & nền ----- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            overflow: hidden;
+            height: 100vh;
+            background: linear-gradient(180deg, #0b0e2a 0%, #1a1f4e 40%, #2d1b4e 80%, #1a0f2a 100%);
+            font-family: 'Quicksand', 'Segoe UI', 'Arial', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            user-select: none;
+        }
+
+        /* ----- Canvas pháo hoa (lớp nền) ----- */
+        #fireworksCanvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        /* ----- Lớp trang trí (đèn lồng, sao, trăng) ----- */
+        .decor-layer {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 2;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        /* ----- Mặt trăng ----- */
+        .moon {
+            position: absolute;
+            top: 8%;
+            right: 10%;
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: radial-gradient(circle at 30% 30%, #fff9e0, #f7d97e);
+            box-shadow: 0 0 80px 20px rgba(255, 215, 100, 0.5), 0 0 160px 60px rgba(255, 200, 80, 0.25);
+            animation: moonGlow 4s ease-in-out infinite alternate;
+        }
+        .moon::after {
+            content: '';
+            position: absolute;
+            top: 20%;
+            left: 25%;
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            background: rgba(200, 170, 120, 0.25);
+            box-shadow: 40px 30px 0 6px rgba(200, 170, 120, 0.2), 70px 10px 0 3px rgba(200, 170, 120, 0.15);
+        }
+        @keyframes moonGlow {
+            0% {
+                box-shadow: 0 0 80px 20px rgba(255, 215, 100, 0.5), 0 0 160px 60px rgba(255, 200, 80, 0.25);
+            }
+            100% {
+                box-shadow: 0 0 120px 40px rgba(255, 215, 100, 0.7), 0 0 200px 80px rgba(255, 200, 80, 0.35);
+            }
+        }
+
+        /* ----- Đám mây ----- */
+        .cloud {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.07);
+            border-radius: 999px;
+            filter: blur(2px);
+            animation: cloudFloat 20s linear infinite alternate;
+        }
+        .cloud-1 {
+            width: 300px;
+            height: 60px;
+            top: 12%;
+            left: -60px;
+            background: rgba(255, 255, 255, 0.05);
+            animation-duration: 25s;
+        }
+        .cloud-2 {
+            width: 400px;
+            height: 70px;
+            top: 25%;
+            right: -80px;
+            background: rgba(255, 255, 255, 0.04);
+            animation-duration: 30s;
+            animation-delay: -5s;
+        }
+        .cloud-3 {
+            width: 200px;
+            height: 40px;
+            top: 5%;
+            left: 30%;
+            background: rgba(255, 255, 255, 0.03);
+            animation-duration: 18s;
+            animation-delay: -10s;
+        }
+        @keyframes cloudFloat {
+            0% {
+                transform: translateX(0px);
+            }
+            100% {
+                transform: translateX(120px);
+            }
+        }
+
+        /* ----- Ngôi sao lấp lánh ----- */
+        .stars {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+        }
+        .star {
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+            animation: twinkle var(--duration) ease-in-out infinite alternate;
+        }
+        @keyframes twinkle {
+            0% {
+                opacity: 0.2;
+                transform: scale(0.8);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1.2);
+            }
+        }
+
+        /* ----- Đèn lồng (bay lơ lửng) ----- */
+        .lantern {
+            position: absolute;
+            font-size: 50px;
+            filter: drop-shadow(0 0 20px rgba(255, 100, 50, 0.6));
+            animation: lanternFloat 6s ease-in-out infinite alternate;
+            transform-origin: center bottom;
+        }
+        .lantern-1 {
+            top: 30%;
+            left: 5%;
+            font-size: 65px;
+            animation-delay: -1s;
+        }
+        .lantern-2 {
+            top: 55%;
+            right: 3%;
+            font-size: 55px;
+            animation-delay: -3s;
+        }
+        .lantern-3 {
+            top: 15%;
+            left: 20%;
+            font-size: 45px;
+            animation-delay: -5s;
+        }
+        .lantern-4 {
+            top: 70%;
+            left: 25%;
+            font-size: 40px;
+            animation-delay: -2s;
+        }
+        .lantern-5 {
+            top: 40%;
+            right: 20%;
+            font-size: 48px;
+            animation-delay: -4s;
+        }
+        @keyframes lanternFloat {
+            0% {
+                transform: translateY(0px) rotate(-3deg);
+            }
+            100% {
+                transform: translateY(-30px) rotate(3deg);
+            }
+        }
+
+        /* ----- Chữ chính (lời mời) ----- */
+        .love-text {
+            position: relative;
+            z-index: 10;
+            text-align: center;
+            color: #fff5e0;
+            text-shadow: 0 0 30px rgba(255, 200, 100, 0.5), 0 0 60px rgba(255, 100, 50, 0.3);
+            font-weight: 700;
+            letter-spacing: 2px;
+            padding: 20px;
+            max-width: 90%;
+            animation: textPulse 3s ease-in-out infinite alternate;
+            pointer-events: none;
+            font-family: 'Dancing Script', 'Quicksand', cursive;
+        }
+        .love-text h1 {
+            font-size: clamp(3rem, 12vw, 5.5rem);
+            margin-bottom: 10px;
+            font-weight: 700;
+            background: linear-gradient(135deg, #ffd89b, #f7b87a, #ffd89b);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: none;
+            filter: drop-shadow(0 0 40px rgba(255, 180, 80, 0.4));
+            line-height: 1.2;
+            font-family: 'Dancing Script', 'Quicksand', cursive;
+        }
+        .love-text .sub {
+            font-size: clamp(2.2rem, 7vw, 4rem);
+            color: #ffdfb0;
+            text-shadow: 0 0 30px rgba(255, 150, 80, 0.6);
+            font-weight: 600;
+            letter-spacing: 4px;
+            -webkit-text-fill-color: #ffdfb0;
+            background: none;
+            margin-top: 10px;
+            opacity: 0.95;
+            font-family: 'Dancing Script', 'Quicksand', cursive;
+        }
+        .love-text .sub span {
+            display: inline-block;
+            animation: heartBeat 1.6s ease-in-out infinite;
+        }
+        @keyframes textPulse {
+            0% {
+                transform: scale(1);
+                filter: drop-shadow(0 0 30px rgba(255, 200, 100, 0.3));
+            }
+            100% {
+                transform: scale(1.02);
+                filter: drop-shadow(0 0 60px rgba(255, 200, 100, 0.6));
+            }
+        }
+        @keyframes heartBeat {
+            0%,
+            100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.25);
+            }
+        }
+
+        /* ----- Responsive nhẹ ----- */
+        @media (max-width: 600px) {
+            .moon {
+                width: 80px;
+                height: 80px;
+                top: 5%;
+                right: 5%;
+            }
+            .lantern {
+                font-size: 35px !important;
+            }
+            .love-text .sub {
+                font-size: clamp(2rem, 8vw, 3rem);
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Canvas pháo hoa -->
+    <canvas id="fireworksCanvas"></canvas>
+
+    <!-- Lớp trang trí -->
+    <div class="decor-layer">
+        <!-- Mặt trăng -->
+        <div class="moon"></div>
+
+        <!-- Mây -->
+        <div class="cloud cloud-1"></div>
+        <div class="cloud cloud-2"></div>
+        <div class="cloud cloud-3"></div>
+
+        <!-- Ngôi sao (tạo bằng JS) -->
+        <div class="stars" id="starsContainer"></div>
+
+        <!-- Đèn lồng -->
+        <div class="lantern lantern-1">🏮</div>
+        <div class="lantern lantern-2">🏮</div>
+        <div class="lantern lantern-3">🏮</div>
+        <div class="lantern lantern-4">🏮</div>
+        <div class="lantern lantern-5">🏮</div>
+    </div>
+
+    <!-- Chữ chính -->
+    <div class="love-text">
+        <h1>🌕 Đi chơi trung thu với anh nha</h1>
+        <div class="sub">
+            <span>❤️</span> &nbsp;em nhé&nbsp; <span>❤️</span>
+        </div>
+    </div>
+
+    <script>
+        // ============================================================
+        // 1. TẠO SAO LẤP LÁNH
+        // ============================================================
+        (function createStars() {
+            const container = document.getElementById('starsContainer');
+            const count = 100; // giảm bớt để đỡ lag
+            for (let i = 0; i < count; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                const size = Math.random() * 2.5 + 1.5;
+                star.style.width = size + 'px';
+                star.style.height = size + 'px';
+                star.style.left = Math.random() * 100 + '%';
+                star.style.top = Math.random() * 70 + '%';
+                star.style.setProperty('--duration', (Math.random() * 3 + 2) + 's');
+                star.style.animationDelay = Math.random() * 5 + 's';
+                star.style.opacity = Math.random() * 0.6 + 0.3;
+                container.appendChild(star);
+            }
+        })();
+
+        // ============================================================
+        // 2. PHÁO HOA - CANVAS (tối ưu để giảm lag)
+        // ============================================================
+        const canvas = document.getElementById('fireworksCanvas');
+        const ctx = canvas.getContext('2d');
+        let W, H;
+
+        function resizeCanvas() {
+            W = canvas.width = window.innerWidth;
+            H = canvas.height = window.innerHeight;
+        }
+        resizeCanvas();
+        window.addEventListener('resize', resizeCanvas);
+
+        // ----- Các hạt pháo hoa -----
+        let particles = [];
+        const GRAVITY = 0.05; // giảm nhẹ trọng lực
+        const FADE = 0.985; // tăng tốc độ mờ để hạt biến mất nhanh hơn
+
+        class Particle {
+            constructor(x, y, color, vx, vy, life, size) {
+                this.x = x;
+                this.y = y;
+                this.color = color;
+                this.vx = vx;
+                this.vy = vy;
+                this.life = life;
+                this.maxLife = life;
+                this.size = size || 2.5;
+                this.trail = [];
+            }
+
+            update() {
+                this.trail.push({ x: this.x, y: this.y });
+                if (this.trail.length > 4) this.trail.shift(); // rút ngắn trail
+
+                this.vx *= 0.98;
+                this.vy *= 0.98;
+                this.vy += GRAVITY;
+                this.x += this.vx;
+                this.y += this.vy;
+                this.life *= FADE;
+                this.size *= 0.995;
+            }
+
+            draw(ctx) {
+                const alpha = Math.min(1, (this.life / this.maxLife) * 1.8);
+                const s = Math.max(0.2, this.size);
+
+                // Vết sáng (trail) - giảm số lượng để đỡ lag
+                for (let i = 0; i < this.trail.length; i++) {
+                    const t = this.trail[i];
+                    const a = (i / this.trail.length) * alpha * 0.4;
+                    ctx.beginPath();
+                    ctx.arc(t.x, t.y, s * (i / this.trail.length) * 0.5, 0, Math.PI * 2);
+                    ctx.fillStyle = this.color.replace('1)', a + ')');
+                    ctx.fill();
+                }
+
+                // Hạt chính
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, s, 0, Math.PI * 2);
+                ctx.fillStyle = this.color.replace('1)', alpha + ')');
+                ctx.fill();
+
+                // Glow (giảm bán kính)
+                ctx.shadowColor = this.color;
+                ctx.shadowBlur = 12;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, s * 1.4, 0, Math.PI * 2);
+                ctx.fillStyle = this.color.replace('1)', alpha * 0.12 + ')');
+                ctx.fill();
+                ctx.shadowBlur = 0;
+            }
+
+            isDead() {
+                return this.life < 0.008 || this.size < 0.15;
+            }
+        }
+
+        // ----- Tạo vụ nổ pháo hoa (giảm số hạt) -----
+        function createExplosion(x, y) {
+            const count = 55 + Math.floor(Math.random() * 50); // giảm từ 80-160 xuống
+            const hue = Math.random() * 360;
+            const color1 = `hsla(${hue}, 100%, 70%, 1)`;
+            const color2 = `hsla(${(hue + 40) % 360}, 100%, 65%, 1)`;
+            const color3 = `hsla(${(hue + 80) % 360}, 100%, 75%, 1)`;
+            const colors = [color1, color2, color3];
+
+            for (let i = 0; i < count; i++) {
+                const angle = Math.random() * Math.PI * 2;
+                const speed = Math.random() * 4.5 + 1.8; // giảm tốc độ
+                const vx = Math.cos(angle) * speed * (0.5 + Math.random() * 0.5);
+                const vy = Math.sin(angle) * speed * (0.5 + Math.random() * 0.5);
+                const life = 0.6 + Math.random() * 0.5;
+                const size = 1.5 + Math.random() * 2.5;
+                const color = colors[Math.floor(Math.random() * colors.length)];
+                const p = new Particle(x, y, color, vx, vy, life, size);
+                particles.push(p);
+            }
+
+            // Thêm ít hạt vàng
+            for (let i = 0; i < 12; i++) {
+                const angle = Math.random() * Math.PI * 2;
+                const speed = Math.random() * 2.5 + 0.8;
+                const vx = Math.cos(angle) * speed;
+                const vy = Math.sin(angle) * speed - 0.5;
+                const p = new Particle(x, y, 'rgba(255, 255, 200, 1)', vx, vy, 1.0, 0.9);
+                particles.push(p);
+            }
+        }
+
+        // ----- Tạo pháo hoa ngẫu nhiên trên màn hình -----
+        function randomFirework() {
+            const x = Math.random() * W * 0.8 + W * 0.1;
+            const y = Math.random() * H * 0.5 + H * 0.1;
+            createExplosion(x, y);
+        }
+
+        // ----- Lặp liên tục (tự động bắn) - giãn tần suất -----
+        let autoInterval = setInterval(() => {
+            randomFirework();
+            // Thỉnh thoảng bắn thêm 1 quả
+            if (Math.random() < 0.25) {
+                setTimeout(randomFirework, 250);
+            }
+        }, 1800); // tăng thời gian giữa các lần bắn
+
+        // ----- Vẽ & cập nhật -----
+        function animate() {
+            ctx.clearRect(0, 0, W, H);
+
+            // Vẽ các hạt
+            for (let i = particles.length - 1; i >= 0; i--) {
+                const p = particles[i];
+                p.update();
+                p.draw(ctx);
+                if (p.isDead()) {
+                    particles.splice(i, 1);
+                }
+            }
+
+            // Nếu không có hạt nào, thêm một ít nền lấp lánh (hiếm khi)
+            if (particles.length < 5 && Math.random() < 0.01) {
+                randomFirework();
+            }
+
+            requestAnimationFrame(animate);
+        }
+        animate();
+
+        // ============================================================
+        // 3. TẠO PHÁO HOA LÚC BẮT ĐẦU (chào mừng) - giảm số lượng
+        // ============================================================
+        setTimeout(() => {
+            for (let i = 0; i < 4; i++) {
+                setTimeout(() => {
+                    const x = Math.random() * W * 0.7 + W * 0.15;
+                    const y = Math.random() * H * 0.5 + H * 0.1;
+                    createExplosion(x, y);
+                }, i * 350 + 200);
+            }
+        }, 400);
+
+        setTimeout(() => {
+            for (let i = 0; i < 3; i++) {
+                setTimeout(randomFirework, i * 400);
+            }
+        }, 2500);
+
+        console.log('🌕 Chúc em Trung Thu vui vẻ! ❤️');
+    </script>
+</body>
+</html>
